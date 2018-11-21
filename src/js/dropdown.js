@@ -12,7 +12,8 @@ var jqLite = require('./lib/jqLite'),
     attrKey = 'data-mui-toggle',
     attrSelector = '[data-mui-toggle="dropdown"]',
     openClass = 'mui--is-open',
-    menuClass = 'mui-dropdown__menu';
+    menuClass = 'mui-dropdown__menu',
+    menuUpClass = menuClass + '--up';
 
 
 /**
@@ -90,7 +91,13 @@ function toggleDropdown(toggleEl) {
         toggleRect = toggleEl.getBoundingClientRect();
 
     var top = toggleRect.top - wrapperRect.top + toggleRect.height;
-    jqLite.css(menuEl, 'top', top + 'px');
+
+    // direction: up/down
+    if (jqLite.hasClass(menuEl, menuUpClass)) {
+      jqLite.css(menuEl, 'bottom', top + 'px');
+    } else {
+      jqLite.css(menuEl, 'top', top + 'px');
+    }
 
     // add open class to wrapper
     jqLite.addClass(menuEl, openClass);
