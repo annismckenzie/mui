@@ -17,8 +17,9 @@ import * as util from '../js/lib/util';
 
 const dropdownClass = 'mui-dropdown',
       menuClass = 'mui-dropdown__menu',
-      openClass = 'mui--is-open',
-      rightClass = 'mui-dropdown__menu--right';
+      menuRightClass = menuClass + '--right',
+      menuUpClass = menuClass + '--up',
+      openClass = 'mui--is-open';
 
 
 /**
@@ -47,6 +48,7 @@ class Dropdown extends React.Component {
     size: 'default',
     label: '',
     alignMenu: 'left',
+    dropup: false,
     onClick: null,
     onSelect: null,
     disabled: false
@@ -140,11 +142,12 @@ class Dropdown extends React.Component {
         labelEl;
 
     const { children, className, color, variant, size, label, alignMenu,
-      onClick, onSelect, disabled, ...reactProps } = this.props;
+      dropup, onClick, onSelect, disabled, ...reactProps } = this.props;
 
     // build label
     if (jqLite.type(label) === 'string') {
-      labelEl = <span>{label} <Caret /></span>;
+      let style = dropup ? {transform: 'rotate(180deg)'} : {};
+      labelEl = <span>{label} <Caret style={style} /></span>;
     } else {
       labelEl = label;
     }
@@ -164,18 +167,23 @@ class Dropdown extends React.Component {
     );
 
     if (this.state.opened) {
-      let cs = {};
+      let cs = {},
+          style = {};
 
       cs[menuClass] = true;
+      cs[menuRightClass] = (alignMenu === 'right');
+      cs[menuUpClass] = (dropup === true),
       cs[openClass] = this.state.opened;
-      cs[rightClass] = (alignMenu === 'right');
       cs = util.classNames(cs);
+
+      // set menu position up/down
+      style[dropup ? 'bottom' : 'top'] = this.state.menuTop;
 
       menuEl = (
         <ul
           ref={el => { this.menuElRef = el }}
           className={cs}
-          style={{ top: this.state.menuTop }}
+          style={style}
           onClick={this.selectCB}
         >
           {children}
