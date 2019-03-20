@@ -5,12 +5,12 @@
 
 'use strict';
 
+var sentinel = require('sentinel-js');
 
 var jqLite = require('./lib/jqLite'),
     util = require('./lib/util'),
-    animationHelpers = require('./lib/animationHelpers'),
     attrKey = 'data-mui-toggle',
-    attrSelector = '[data-mui-toggle="dropdown"]',
+    cssSelector = '[data-mui-toggle="dropdown"]',
     openClass = 'mui--is-open',
     menuClass = 'mui-dropdown__menu';
 
@@ -30,7 +30,7 @@ function initialize(toggleEl) {
       && !toggleEl.hasAttribute('type')) {
     toggleEl.type = 'button';
   }
-
+  
   // attach click handler
   jqLite.on(toggleEl, 'click', clickHandler);
 }
@@ -113,13 +113,14 @@ module.exports = {
   /** Initialize module listeners */
   initListeners: function() {
     // markup elements available when method is called
-    var elList = document.querySelectorAll(attrSelector),
+    var elList = document.querySelectorAll(cssSelector),
         i = elList.length;
     while (i--) {initialize(elList[i]);}
 
     // listen for new elements
-    animationHelpers.onAnimationStart('mui-dropdown-inserted', function(ev) {
-      initialize(ev.target);
-    });
+    sentinel.on(
+      [cssSelector, '.mui-btn[data-mui-toggle="dropdown"]'],
+      initialize
+    );
   }
 };

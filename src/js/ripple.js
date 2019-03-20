@@ -5,13 +5,14 @@
 
 'use strict';
 
+var sentinel = require('sentinel-js');
 
 var jqLite = require('./lib/jqLite'),
     util = require('./lib/util'),
-    animationHelpers = require('./lib/animationHelpers'),
     supportsTouch = 'ontouchstart' in document.documentElement,
     mouseDownEvents = (supportsTouch) ? 'touchstart' : 'mousedown',
-    mouseUpEvents = (supportsTouch) ? 'touchend' : 'mouseup mouseleave';
+    mouseUpEvents = (supportsTouch) ? 'touchend' : 'mouseup mouseleave',
+    cssSelector = '.mui-btn';
 
 
 /**
@@ -110,13 +111,14 @@ module.exports = {
   /** Initialize module listeners */
   initListeners: function() {
     // markup elements available when method is called
-    var elList = document.getElementsByClassName('mui-btn'),
+    var elList = document.querySelectorAll(cssSelector),
         i = elList.length;
     while (i--) initialize(elList[i]);
 
     // listen for new elements
-    animationHelpers.onAnimationStart('mui-btn-inserted', function(ev) {
-      initialize(ev.target);
-    });
+    sentinel.on(
+      [cssSelector, '.mui-btn[data-mui-toggle="dropdown"]'],
+      initialize
+    );
   }
 };

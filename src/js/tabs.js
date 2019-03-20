@@ -5,12 +5,11 @@
 
 'use strict';
 
+var sentinel = require('sentinel-js');
 
 var jqLite = require('./lib/jqLite'),
     util = require('./lib/util'),
-    animationHelpers = require('./lib/animationHelpers'),
-    attrKey = 'data-mui-toggle',
-    attrSelector = '[' + attrKey + '="tab"]',
+    cssSelector = '[data-mui-toggle="tab"]',
     controlsAttrKey = 'data-mui-controls',
     activeClass = 'mui--is-active',
     showstartKey = 'mui.tabs.showstart',
@@ -135,13 +134,12 @@ module.exports = {
   /** Initialize module listeners */
   initListeners: function() {
     // markup elements available when method is called
-    var elList = document.querySelectorAll(attrSelector),
+    var elList = document.querySelectorAll(cssSelector),
         i = elList.length;
     while (i--) {initialize(elList[i]);}
     
-    animationHelpers.onAnimationStart('mui-tab-inserted', function(ev) {
-      initialize(ev.target);
-    });
+    // listen for new elements
+    sentinel.on(cssSelector, initialize);
   },
   
   /** External API */

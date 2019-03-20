@@ -5,10 +5,11 @@
 
 'use strict';
 
+var sentinel = require('sentinel-js');
+
 
 var jqLite = require('./lib/jqLite'),
     util = require('./lib/util'),
-    animlib = require('./lib/animationHelpers'),
     cssSelector = '.mui-textfield > input, .mui-textfield > textarea',
     floatingLabelClass = 'mui-textfield--float-label';
 
@@ -89,9 +90,7 @@ module.exports = {
     while (i--) initialize(elList[i]);
 
     // listen for new elements
-    animlib.onAnimationStart('mui-textfield-inserted', function(ev) {
-      initialize(ev.target);
-    });
+    sentinel.on(cssSelector, initialize);
 
     // add transition css for floating labels
     setTimeout(function() {

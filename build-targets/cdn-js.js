@@ -15,7 +15,6 @@
       dropdown = require('src/js/dropdown'),
       overlay = require('src/js/overlay'),
       ripple = require('src/js/ripple'),      
-      select = require('src/js/select'),
       tabs = require('src/js/tabs'),
       textfield = require('src/js/textfield');
 
@@ -28,7 +27,6 @@
   // init libraries
   jqLite.ready(function() {
     textfield.initListeners();
-    select.initListeners();
     ripple.initListeners();
     dropdown.initListeners();
     tabs.initListeners();

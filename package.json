@@ -71,6 +71,7 @@
     "react-test-renderer": "^16.8.4",
     "reactify": "^1.1.1",
     "readable-wrap": "^1.0.0",
+    "sentinel-js": "^0.0.5",
     "streamqueue": "^1.1.2",
     "stringify": "^5.2.0",
     "synthetic-dom-events": "^0.3.0",
